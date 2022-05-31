@@ -73,10 +73,10 @@ def start():
     # asyncio.run(load_site_data())
 
     for_dump = sorted(all_films, key=lambda x: x['rating'], reverse=True)
-    for_dump = {"name": for_dump}
+    for_dump = {"nodes": for_dump}
     print(for_dump)
 
-    with open("json_nodes.json", "w", encoding="UTF-16") as file:
+    with open("america.json", "w") as file:
         json.dump(for_dump, file, indent=4)
 
     print(f'Execution time: {time() - start_time}')

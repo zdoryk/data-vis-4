@@ -18,7 +18,7 @@ for i in temp:
 
 print(test)
 
-file = open('json_nodes.json', 'r', encoding='UTF-16')
+file = open('america.json', 'r')
 
 q = json.load(file)
 
@@ -49,5 +49,5 @@ q['links'] = all_sources
 
 print(q)
 
-with open("json_nodes_with_links.json", "w", encoding="UTF-16") as file:
+with open("json_nodes_with_links_a.json", "w") as file:
     json.dump(q, file, indent=4)
