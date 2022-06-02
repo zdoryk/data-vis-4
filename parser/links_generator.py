@@ -24,7 +24,10 @@ q = json.load(file)
 
 sources = {}
 
-for i in q['nodes'][:10]:
+q['nodes'] = q['nodes'][:50]
+
+
+for i in q['nodes']:
     for k, v in test.items():
         if k in i['genres']:
             v.append(i['title'])
