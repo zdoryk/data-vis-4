@@ -17,7 +17,7 @@ async def get_page_data(session, url: str):
         # print(1)
         film = BeautifulSoup(await re.text(), "lxml")
         try:
-            rating = film.find(text='IMDb RATING').findNext('a').find('span').text
+            rating = float(film.find(text='IMDb RATING').findNext('a').find('span').text)
         except:
             rating = 0
 
@@ -33,16 +33,26 @@ async def get_page_data(session, url: str):
 
         try:
             temp = film.find("ul", {"data-testid": "hero-title-block__metadata"}).findAll('li')[2].text.split()
-            time = int(temp[0][0]) * 60 + int(temp[1][:2])
+            if temp[1]:
+                time = int(temp[0][0]) * 60 + int(temp[1].replace('m', ''))
+            else:
+                time = int(temp[0][0]) * 60
         except:
             time = 0
+
+        try:
+            stars = film.find('a', string='Stars').nextSibling()[0]
+            actors = [x.text for x in stars.findAll('a')]
+        except:
+            actors = ['None']
 
         all_films.append(
             {
                 'title': title,
                 'rating': rating,
                 'genres': genres,
-                'time': time
+                'time': time,
+                'actors': actors
             }
         )
 
@@ -75,6 +85,7 @@ def start():
     for_dump = sorted(all_films, key=lambda x: x['rating'], reverse=True)
     for_dump = {"nodes": for_dump}
     print(for_dump)
+
 
     with open("america.json", "w") as file:
         json.dump(for_dump, file, indent=4)
